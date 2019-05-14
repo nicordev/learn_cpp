@@ -5,8 +5,8 @@ using namespace std;
 
 void menu(bool& quit);
 void hello();
-string askName();
-int askAge();
+string ask(string question);
+void answerAge(int age);
 
 int main()
 {
@@ -15,6 +15,8 @@ int main()
     while (!quit) {
         menu(quit);
     }
+
+    cout << "Bye!" << endl;
     
     return 0;
 }
@@ -23,13 +25,21 @@ void menu(bool& quit)
 {
     cout << "Hello world!" << endl;
 
-    string name = askName();
+    string question = "What's your name?";
+    string name = ask(question);
     cout << "Nice to meet you " << name << "!" << endl;
 
+    question = "How old are you?";
     int age(-1);
-    while ((age = askAge()) <= 0) {
-        cout << "You have to be older than that!" << endl;
+    
+    while (age <= 0) {
+        age = stoi(ask(question)); // BUG: unable to cast to int
+        if (age <= 0) {
+        cout << "\nYou're kidding..." << endl;
+        }
     }
+    
+    answerAge(age);
 
     cout << "\nQuit?\n0: no\n1: yes" << endl;
     cin >> quit;
@@ -40,22 +50,12 @@ void hello()
     cout << "Hello world!" << endl;
 }
 
-string askName()
+string ask(string question)
 {
-    cout << "What's your name?" << endl;
-    string name;
-    cin >> name;
-
-    return name;
-}
-
-int askAge()
-{
-    cout << "How old are you?" << endl;
-    int age;
-    cin >> age;
-
-    return age;
+    cout << question << endl;
+    string answer;
+    cin >> answer;
+    return answer;
 }
 
 void answerAge(int age)
